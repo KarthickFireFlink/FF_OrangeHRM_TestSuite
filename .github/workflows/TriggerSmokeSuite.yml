@@ -2,7 +2,8 @@ name: Execute FireFlink Smoke Suite
 
 on:
   repository_dispatch:
-    types: [source-code-updated]
+    types:
+      - source-code-updated
   workflow_dispatch:
 
 jobs:
