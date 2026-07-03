@@ -1,0 +1,40 @@
+name: Execute FireFlink Smoke Suite
+
+on:
+  workflow_dispatch:
+
+jobs:
+  execute-suite:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Execute FireFlink Test Suite
+        env:
+          ACCESS_TOKEN: ${{ secrets.FIREFLINK_ACCESS_TOKEN }}
+        run: |
+          curl --location "https://app.v3.fireflink.com/dashboardexecution/optimize/v3/public/cicd/default-machine" \
+          --header "Content-Type: application/json" \
+          --header "version: phase_1" \
+          --data-raw "{
+            \"suiteId\": \"SUITE_a77fca1f-e515-4aae-8148-449bfd2d0b97\",
+            \"waitConfig\": {
+              \"captureScreenshots\": \"failedSteps\",
+              \"captureVideos\": \"notCapture\",
+              \"delayBetweenSteps\": \"0\",
+              \"delayBetweenStepsUnit\": \"Seconds\",
+              \"explicitWait\": \"20\",
+              \"explicitWaitUnit\": \"Seconds\",
+              \"implicitWait\": \"5\",
+              \"implicitWaitUnit\": \"Seconds\",
+              \"terminateScriptIfTakesMoreTime\": \"30\",
+              \"terminateScriptUnit\": \"Minutes\",
+              \"terminateSuiteIfTakesMoreTime\": \"12\",
+              \"terminateSuiteUnit\": \"Hours\"
+            },
+            \"licenseId\": \"LIC26105\",
+            \"accessToken\": \"$ACCESS_TOKEN\",
+            \"projectId\": \"PJT1123\"
+          }"
